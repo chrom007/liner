@@ -1,0 +1,14 @@
+{
+  "name": "project-lines-counter",
+  "version": "1.0.0",
+  "description": "Soft for counting lines on all files in project. With Access type files and Denied files/folders",
+  "main": "counter.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "CHROM <psergeid@yandex.ru>",
+  "license": "ISC",
+  "dependencies": {
+    "colors": "^1.2.1"
+  }
+}
