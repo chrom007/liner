@@ -14,14 +14,15 @@ if (args.length <= 0) {
 
 var files_array = [];
 var counts = [];
-var access_types = ["php", "js", "html", "css", "vue"];
-var denied_files = ["node_modules", "libs", ".git", ".vscode", ".idea", "dist", "build", "package-lock.json", "package.json"];
+var total = 0;
+var access_types = ["php", "js", "html", "css", "vue", "jsx", "scss"];
+var denied_files = ["node_modules", ".git", ".vscode", ".idea", "dist", "build", "package-lock.json", "package.json"];
 
 
 function readDir(foldername) {
 	var files = fs.readdirSync(foldername);
 
-	files.forEach(function(filename){
+	files.forEach(function (filename) {
 		if (denied_files.indexOf(filename) >= 0) return false;
 		var filepath = foldername + "/" + filename;
 		var filestat = fs.statSync(filepath);
@@ -43,6 +44,8 @@ function readDir(foldername) {
 					counts[filetype] += lines;
 				}
 
+				total += lines;
+
 				files_array.push({
 					filename,
 					lines,
@@ -56,7 +59,7 @@ function readDir(foldername) {
 
 function nameFix(name) {
 	if (name.length < 25) {
-		while(name.length < 25) {
+		while (name.length < 25) {
 			name += " ";
 		}
 	}
@@ -70,12 +73,15 @@ function nameFix(name) {
 // Start counting 
 readDir(args[0]);
 
-files_array = files_array.sort((a, b) => {
+files_array.sort((a, b) => {
 	return b.lines - a.lines;
 });
-files_array.forEach(({filename, lines, filetype}) => {
+counts.sort((a, b) => {
+	return b - a;
+});
+files_array.forEach(({ filename, lines, filetype }) => {
 	console.log('File: ', nameFix(filename).yellow, `  \tLines: `, (lines.toString()).cyan, `\tType: `, (filetype.toUpperCase()).green);
 });
 
 console.log("=================================================================");
-console.log("Counts of lines: ", counts);
+console.log("Counts of lines:", total, counts);
